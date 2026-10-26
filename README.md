@@ -1,6 +1,11 @@
 # great_beads
 
-Bead geometry control for robotic WAAM: GMAW, 1.0 mm wire, beads on steel plate first, single-bead walls next.
+Bead geometry control for robotic WAAM, with the characteristics of: 
+
+GMAW, 1.0 mm wire, beads on steel plate first, single-bead walls next.
+
+Serving the purpose of: 
+
 Research stay EL-AD26-356, Landers Research Group, University of Notre Dame.
 
 | Part | Folder | Turns this | Into this |
