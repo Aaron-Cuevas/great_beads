@@ -1,0 +1,9 @@
+* text=auto eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.png binary
+*.ico binary
+*.ply binary
+*.stl binary
+planner/vendor/** linguist-vendored
+notebooks/** linguist-documentation

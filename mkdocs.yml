@@ -1,0 +1,54 @@
+site_name: great_beads
+site_description: Bead geometry control for robotic WAAM
+repo_url: https://github.com/Aaron-Cuevas/great_beads
+docs_dir: docs
+exclude_docs: |
+  hooks/
+hooks:
+  - docs/hooks/copy_app.py
+watch:
+  - planner
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Pipeline: pipeline/index.md
+  - Bead Planner: planner/index.md
+  - DevLog:
+      - devlog/index.md
+      - devlog/2026-10-21-day-0.md
+  - References: references.md
+validation:
+  nav:
+    omitted_files: warn
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - content.code.copy
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3.2.2/es5/tex-mml-chtml.js

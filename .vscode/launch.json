@@ -1,0 +1,7 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    { "name": "Planner in Edge", "type": "msedge", "request": "launch", "file": "${workspaceFolder}/planner/index.html" },
+    { "name": "Planner in Chrome", "type": "chrome", "request": "launch", "file": "${workspaceFolder}/planner/index.html" }
+  ]
+}

@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "great-beads"
+dynamic = ["version"]
+description = "Bead morphology pipeline and process model for robotic WAAM."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Aaron Maximiliano Cuevas Oca\u00f1a" }]
+dependencies = [
+  "numpy>=1.26",
+  "scipy>=1.11",
+  "scikit-image>=0.22",
+  "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+plots = ["matplotlib>=3.8"]
+docs = ["mkdocs-material>=9.7.5,<10"]
+dev = ["pytest>=8"]
+
+[tool.hatch.version]
+path = "src/great_beads/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/great_beads"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>WAAM Bead Planner</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="app" id="app">
+      <header class="top">
+        <b>WAAM Bead Planner</b><span class="ctx" id="ctxName">3D Viewport</span
+        ><span class="model" id="mTxt"></span>
+      </header>
+
+      <nav class="gbar" aria-label="Workspace">
+        <button
+          id="ctx3d"
+          aria-pressed="true"
+          title="3D Viewport"
+          aria-label="3D Viewport"
+        >
+          <svg class="ic" viewBox="0 0 20 20">
+            <path
+              d="M10 2.5 16.5 6v8L10 17.5 3.5 14V6z M3.5 6 10 9.5 16.5 6 M10 9.5v8"
+            />
+          </svg>
+        </button>
+        <button
+          id="ctxGraphs"
+          aria-pressed="false"
+          title="Graphs"
+          aria-label="Graphs"
+        >
+          <svg class="ic" viewBox="0 0 20 20">
+            <path d="M3 3v14h14 M5.5 13.5c2-6 3.5-7 5-3.5s3 2 5.5-5" />
+          </svg>
+        </button>
+        <button
+          id="ctxPlate"
+          aria-pressed="false"
+          title="Plate and robot frame"
+          aria-label="Plate and robot frame"
+        >
+          <svg class="ic" viewBox="0 0 20 20">
+            <path
+              d="M2.5 12.5 8 7h9.5L12 12.5z M2.5 12.5v2.5H12v-2.5 M12 15l5.5-5.5V7"
+            />
+          </svg>
+        </button>
+      </nav>
+
+      <main class="main">
+        <div class="pane" id="pane3d">
+          <canvas id="gl" aria-label="3D view of the predicted bead"></canvas>
+          <div class="nogl" id="nogl" hidden>
+            The 3D view needs WebGL, which this browser has turned off. The
+            parameters, graphs and robot offset still work.
+          </div>
+          <div class="hud">
+            <div id="hud1">User Perspective</div>
+            <div id="hud2"></div>
+          </div>
+          <canvas
+            id="gizmo"
+            width="184"
+            height="184"
+            aria-label="View axes. Click an axis to look along it."
+          ></canvas>
+          <div class="vtools">
+            <button id="vtZoom" title="Zoom: drag up or down" aria-label="Zoom">
+              <svg class="ic" viewBox="0 0 20 20">
+                <circle cx="8.5" cy="8.5" r="5" />
+                <path d="M12.3 12.3 17 17 M6.5 8.5h4 M8.5 6.5v4" />
+              </svg>
+            </button>
+            <button
+              id="vtPan"
+              aria-pressed="false"
+              title="Pan: drag, or click to keep panning with the left button"
+              aria-label="Pan"
+            >
+              <svg class="ic" viewBox="0 0 20 20">
+                <path
+                  d="M7.2 10.5V4.8a1.1 1.1 0 0 1 2.2 0V9.5 M9.4 9.5V3.6a1.1 1.1 0 0 1 2.2 0V9.5 M11.6 9.5V4.6a1.1 1.1 0 0 1 2.2 0V10 M13.8 10V7a1.1 1.1 0 0 1 2.2 0v5.2c0 3-2 5.3-5.2 5.3-2.4 0-3.6-1-4.8-3L4.3 12c-.6-1 .7-1.9 1.5-1l1.4 1.6"
+                />
+              </svg>
+            </button>
+            <button
+              id="vtCam"
+              title="Camera: frame the bead"
+              aria-label="Frame the bead"
+            >
+              <svg class="ic" viewBox="0 0 20 20">
+                <rect x="2.5" y="6" width="10" height="8" rx="1.5" />
+                <path d="M12.5 9 17.5 6.5v7L12.5 11" />
+              </svg>
+            </button>
+            <button
+              id="vtGrid"
+              aria-pressed="true"
+              title="Grid on the plate"
+              aria-label="Grid"
+            >
+              <svg class="ic" viewBox="0 0 20 20">
+                <path
+                  d="M3 3h14v14H3z M3 7.7h14 M3 12.3h14 M7.7 3v14 M12.3 3v14"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="pane" id="paneGraphs" hidden>
+          <div class="card">
+            <h3>Cross-section across the bead</h3>
+            <p id="capA"></p>
+            <svg class="ch" id="chA" viewBox="0 0 400 200"></svg>
+          </div>
+          <div class="card">
+            <h3>Cross-section along the bead</h3>
+            <p id="capB"></p>
+            <svg class="ch" id="chB" viewBox="0 0 400 220"></svg>
+          </div>
+          <div class="card">
+            <h3>Process map</h3>
+            <p id="capC"></p>
+            <svg class="ch" id="chC" viewBox="0 0 400 290"></svg>
+          </div>
+        </div>
+        <div class="pane" id="panePlate" hidden>
+          <div class="card">
+            <div class="chead">
+              <h3>Bead on the plate</h3>
+              <span class="btns"
+                ><button type="button" class="btn" id="pvFit">Fit plate</button
+                ><button type="button" class="btn" id="pvBead">
+                  Fit bead
+                </button></span
+              >
+            </div>
+            <p id="capP"></p>
+            <svg class="ch" id="chP" viewBox="0 0 440 380"></svg>
+          </div>
+          <div class="card">
+            <h3>Program lines</h3>
+            <p id="progNote"></p>
+            <pre id="progTxt"></pre>
+            <h3 style="margin-top: 10px">Coordinates</h3>
+            <p id="coordNote"></p>
+            <pre id="coordTxt"></pre>
+            <p style="margin-top: 6px">
+              Confirm the syntax on the controller. Make the first run in T1
+              with the weld disabled.
+            </p>
+            <details>
+              <summary>Transformation matrix</summary>
+              <p>Plate coordinates to robot coordinates.</p>
+              <pre id="matTxt"></pre>
+            </details>
+          </div>
+        </div>
+      </main>
+
+      <aside class="side" id="side">
+        <div class="props" id="props"></div>
+        <div class="tabs" role="tablist" aria-orientation="vertical">
+          <button role="tab" id="tabProcess" aria-selected="true">
+            Process
+          </button>
+          <button role="tab" id="tabBead" aria-selected="false">Bead</button>
+          <button role="tab" id="tabRobot" aria-selected="false">Robot</button>
+          <button role="tab" id="tabView" aria-selected="false">View</button>
+        </div>
+      </aside>
+
+      <section class="tl" id="tl">
+        <div class="tlbar">
+          <div class="play">
+            <button
+              id="tFirst"
+              title="Jump to start"
+              aria-label="Jump to start"
+            >
+              <svg viewBox="0 0 12 12">
+                <path d="M1.5 2h1.6v8H1.5zM10.5 2v8L4 6z" />
+              </svg>
+            </button>
+            <button
+              id="tPrev"
+              title="Previous frame"
+              aria-label="Previous frame"
+            >
+              <svg viewBox="0 0 12 12">
+                <path d="M6.5 2v8L1 6zM11 2v8L6.5 6z" />
+              </svg>
+            </button>
+            <button
+              id="tPlay"
+              aria-pressed="false"
+              title="Play"
+              aria-label="Play"
+            >
+              <svg viewBox="0 0 12 12">
+                <path id="playIc" d="M3 1.8v8.4L10 6z" />
+              </svg>
+            </button>
+            <button id="tNext" title="Next frame" aria-label="Next frame">
+              <svg viewBox="0 0 12 12">
+                <path d="M5.5 2v8L11 6zM1 2v8l4.5-4z" />
+              </svg>
+            </button>
+            <button id="tLast" title="Jump to end" aria-label="Jump to end">
+              <svg viewBox="0 0 12 12">
+                <path d="M8.9 2h1.6v8H8.9zM1.5 2v8L8 6z" />
+              </svg>
+            </button>
+          </div>
+          <span id="tlFrame"></span>
+          <span class="info" id="tlInfo"></span>
+          <span class="grow"></span>
+          <span id="tlStart"></span>
+          <span id="tlEnd"></span>
+        </div>
+        <canvas
+          id="ruler"
+          aria-label="Timeline. Drag to move through the deposition."
+        ></canvas>
+      </section>
+
+      <footer class="status" id="status"></footer>
+    </div>
+    <div id="tip" hidden></div>
+
+    <script src="vendor/three.min.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
